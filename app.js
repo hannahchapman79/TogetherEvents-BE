@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const connectMongoDB = require("./db/mongodbConnection");
 const { authRouter } = require("./routes");
+const cookieParser = require("cookie-parser");
 
 const envFile = `.env.${process.env.NODE_ENV || "development"}`;
 dotenv.config({ path: envFile });
@@ -9,6 +10,7 @@ dotenv.config({ path: envFile });
 const app = express();
 // Middleware to parse JSON in request bodies
 app.use(express.json());
+app.use(cookieParser());
 
 const initializeServer = async () => {
   if (process.env.NODE_ENV !== "test") {
