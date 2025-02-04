@@ -14,9 +14,11 @@ function verifyToken(request, response, next) {
 
   try {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    request.user_id = decoded.user_id;
-    request.email = decoded.email;
-    request.isAdmin = decoded.isAdmin;
+    request.user = {
+      user_id: decoded.user_id,
+      email: decoded.email,
+      isAdmin: decoded.isAdmin,
+    };
 
     next();
   } catch (error) {

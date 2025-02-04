@@ -2,6 +2,7 @@ const {
   postUser,
   postLoginAttempt,
   postRefreshToken,
+  getCurrentUser,
 } = require("../controllers/auth.controller");
 const verifyToken = require("../middleware/jwtAuth");
 const express = require("express");
