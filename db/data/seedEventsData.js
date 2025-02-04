@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 const { Event } = require("../../models/events.model.js");
 const { User } = require("../../models/users.model.js");
 const connectMongoDB = require("../../db/mongodbConnection");
+const envFile = `.env.${process.env.NODE_ENV || "development"}`;
+dotenv.config({ path: envFile });
 
 async function seedDatabase() {
   try {
