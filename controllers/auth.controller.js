@@ -1,29 +1,67 @@
 const { insertUser, attemptLogin } = require("../models/auth.model");
 
 exports.postUser = async (request, response, next) => {
-    try {
-        const user = request.body;
-        const newUser = await insertUser(user);
-        response.status(201).send({ user: newUser });
-    } catch (error) {
-        next(error);
-    }
+  try {
+    const user = request.body;
+    const newUser = await insertUser(user);
+    response.status(201).send({ user: newUser });
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.postLoginAttempt = async (request, response, next) => {
-    try {
-        const loginAttempt = request.body;
-        const { user, accessToken, refreshToken } = await attemptLogin(loginAttempt);
+  try {
+    const loginAttempt = request.body;
+    const { user, accessToken, refreshToken } =
+      await attemptLogin(loginAttempt);
 
-        response.cookie("jwt", refreshToken, {
-            httpOnly: true,
-            sameSite: "None",
-            secure: true,
-            maxAge: 30 * 24 * 60 * 60 * 1000,
-        });
+    response.cookie("jwt", refreshToken, {
+      httpOnly: true,
+      sameSite: "None",
+      secure: true,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
 
-        response.status(200).json({ user, accessToken });
-    } catch (error) {
-        next(error)
+    response.status(200).json({ user, accessToken });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.postRefreshToken = (request, response, next) => {
+  try {
+    const refreshToken = request.cookies?.jwt;
+    if (!refreshToken) {
+      return response
+        .status(401)
+        .json({ message: "No refresh token provided" });
     }
+
+    jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET,
+      (error, decoded) => {
+        if (error) {
+          return response
+            .status(403)
+            .json({ message: "Invalid or expired refresh token" });
+        }
+
+        const newAccessToken = jwt.sign(
+          {
+            user_id: decoded.user_id,
+            email: decoded.email,
+            isAdmin: decoded.isAdmin,
+          },
+          process.env.ACCESS_TOKEN_SECRET,
+          { expiresIn: "15min" },
+        );
+
+        response.json({ accessToken: newAccessToken });
+      },
+    );
+  } catch (error) {
+    next(error);
+  }
 };

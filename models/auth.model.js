@@ -65,40 +65,40 @@ exports.insertUser = async (newUser) => {
 };
 
 exports.attemptLogin = async (loginAttempt) => {
-    if (!loginAttempt.email || !loginAttempt.password) {
-      throw { status: 400, message: "All fields are required (email, password)" };
-    }
-  
-    const user = await User.findOne({ email: loginAttempt.email });
-    if (!user) {
-      throw { status: 400, message: "Bad email or password" };
-    }
-  
-    const isMatch = await bcrypt.compare(loginAttempt.password, user.password);
-    if (!isMatch) {
-      throw { status: 400, message: "Bad email or password" };
-    }
-  
-    const accessToken = jwt.sign(
-      { user_id: user._id, email: user.email, isAdmin: user.isAdmin },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "15min" }
-    );
-  
-    const refreshToken = jwt.sign(
-      { email: user.email },
-      process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "30d" }
-    );
-  
-    return {
-      user: {
-        user_id: user._id,
-        username: user.username,
-        email: user.email,
-        isAdmin: user.isAdmin
-      },
-      accessToken,
-      refreshToken, 
-    };
+  if (!loginAttempt.email || !loginAttempt.password) {
+    throw { status: 400, message: "All fields are required (email, password)" };
+  }
+
+  const user = await User.findOne({ email: loginAttempt.email });
+  if (!user) {
+    throw { status: 400, message: "Bad email or password" };
+  }
+
+  const isMatch = await bcrypt.compare(loginAttempt.password, user.password);
+  if (!isMatch) {
+    throw { status: 400, message: "Bad email or password" };
+  }
+
+  const accessToken = jwt.sign(
+    { user_id: user._id, email: user.email, isAdmin: user.isAdmin },
+    process.env.ACCESS_TOKEN_SECRET,
+    { expiresIn: "15min" },
+  );
+
+  const refreshToken = jwt.sign(
+    { email: user.email },
+    process.env.REFRESH_TOKEN_SECRET,
+    { expiresIn: "30d" },
+  );
+
+  return {
+    user: {
+      user_id: user._id,
+      username: user.username,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    },
+    accessToken,
+    refreshToken,
   };
+};
