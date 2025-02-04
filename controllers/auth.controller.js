@@ -65,3 +65,7 @@ exports.postRefreshToken = (request, response, next) => {
     next(error);
   }
 };
+
+exports.getCurrentUser = (request, response, next) => {
+  response.json({ user: request.user });
+};

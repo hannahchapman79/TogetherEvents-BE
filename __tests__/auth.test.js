@@ -191,3 +191,76 @@ describe("POST /api/auth/login", () => {
     );
   });
 });
+
+describe("GET /api/auth/me", () => {
+  let testUser, accessToken;
+
+  beforeEach(async () => {
+    testUser = await new User({
+      username: "testuser",
+      name: "Test User",
+      email: "test@example.com",
+      password: await bcrypt.hash("testPassword123", 13),
+      isAdmin: false,
+    }).save();
+
+    const jwt = require("jsonwebtoken");
+    accessToken = jwt.sign(
+      {
+        user_id: testUser._id.toString(),
+        email: testUser.email,
+        isAdmin: testUser.isAdmin,
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "1h" },
+    );
+  });
+
+  it("should return current user details when provided a valid token", async () => {
+    const response = await request(app)
+      .get("/api/auth/me")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .expect(200);
+
+    expect(response.body).toHaveProperty("user");
+    expect(response.body.user).toHaveProperty("email", testUser.email);
+    expect(response.body.user).toHaveProperty("isAdmin", false);
+    expect(response.body.user).not.toHaveProperty("password");
+  });
+
+  it("should return 401 when no token is provided", async () => {
+    const response = await request(app).get("/api/auth/me").expect(401);
+
+    expect(response.body.message).toBe("Access denied: No token provided");
+  });
+
+  it("should return 401 when an invalid token is provided", async () => {
+    const response = await request(app)
+      .get("/api/auth/me")
+      .set("Authorization", "Bearer invalidToken")
+      .expect(401);
+
+    expect(response.body.message).toBe("Invalid token");
+  });
+
+  it("should return 403 when the token is expired", async () => {
+    const jwt = require("jsonwebtoken");
+
+    const expiredToken = jwt.sign(
+      {
+        user_id: testUser._id.toString(),
+        email: testUser.email,
+        isAdmin: testUser.isAdmin,
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "-1s" },
+    );
+
+    const response = await request(app)
+      .get("/api/auth/me")
+      .set("Authorization", `Bearer ${expiredToken}`)
+      .expect(403);
+
+    expect(response.body.message).toBe("Token expired");
+  });
+});
