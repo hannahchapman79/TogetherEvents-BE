@@ -124,68 +124,70 @@ describe("POST /api/auth/signup", () => {
 });
 
 describe("POST /api/auth/login", () => {
-    beforeEach(async () => {
-        const testUser = {
-            username: "testuser",
-            name: "Test User",
-            email: "test@example.com",
-            password: await bcrypt.hash("testPassword123", 13),
-            isAdmin: false
-        };
-        await new User(testUser).save();
-    });
+  beforeEach(async () => {
+    const testUser = {
+      username: "testuser",
+      name: "Test User",
+      email: "test@example.com",
+      password: await bcrypt.hash("testPassword123", 13),
+      isAdmin: false,
+    };
+    await new User(testUser).save();
+  });
 
-    it("should login successfully and return JWT token", async () => {
-        const loginCredentials = {
-            email: "test@example.com",
-            password: "testPassword123"
-        };
+  it("should login successfully and return JWT token", async () => {
+    const loginCredentials = {
+      email: "test@example.com",
+      password: "testPassword123",
+    };
 
-        const response = await request(app)
-            .post("/api/auth/login")
-            .send(loginCredentials)
-            .expect(200);
+    const response = await request(app)
+      .post("/api/auth/login")
+      .send(loginCredentials)
+      .expect(200);
 
-        expect(response.body).toHaveProperty("accessToken");
-        expect(response.body).toHaveProperty("user");
-        expect(response.body.user).toHaveProperty("email", loginCredentials.email);
-        expect(response.body.user).not.toHaveProperty("password");
-    });
+    expect(response.body).toHaveProperty("accessToken");
+    expect(response.body).toHaveProperty("user");
+    expect(response.body.user).toHaveProperty("email", loginCredentials.email);
+    expect(response.body.user).not.toHaveProperty("password");
+  });
 
-    it("should return 400 for incorrect password", async () => {
-        const loginCredentials = {
-            email: "test@example.com",
-            password: "wrongPassword"
-        };
+  it("should return 400 for incorrect password", async () => {
+    const loginCredentials = {
+      email: "test@example.com",
+      password: "wrongPassword",
+    };
 
-        const response = await request(app)
-            .post("/api/auth/login")
-            .send(loginCredentials)
-            .expect(400);
+    const response = await request(app)
+      .post("/api/auth/login")
+      .send(loginCredentials)
+      .expect(400);
 
-        expect(response.body.message).toBe("Bad email or password");
-    });
+    expect(response.body.message).toBe("Bad email or password");
+  });
 
-    it("should return 400 for non-existent email", async () => {
-        const loginCredentials = {
-            email: "nonexistent@example.com",
-            password: "testPassword123"
-        };
+  it("should return 400 for non-existent email", async () => {
+    const loginCredentials = {
+      email: "nonexistent@example.com",
+      password: "testPassword123",
+    };
 
-        const response = await request(app)
-            .post("/api/auth/login")
-            .send(loginCredentials)
-            .expect(400);
+    const response = await request(app)
+      .post("/api/auth/login")
+      .send(loginCredentials)
+      .expect(400);
 
-        expect(response.body.message).toBe("Bad email or password");
-    });
+    expect(response.body.message).toBe("Bad email or password");
+  });
 
-    it("should return 400 for missing credentials", async () => {
-        const response = await request(app)
-            .post("/api/auth/login")
-            .send({})
-            .expect(400);
+  it("should return 400 for missing credentials", async () => {
+    const response = await request(app)
+      .post("/api/auth/login")
+      .send({})
+      .expect(400);
 
-        expect(response.body.message).toBe("All fields are required (email, password)");
-    });
+    expect(response.body.message).toBe(
+      "All fields are required (email, password)",
+    );
+  });
 });
