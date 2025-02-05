@@ -61,21 +61,35 @@ const eventSchema = new mongoose.Schema({
 const Event = mongoose.model("Event", eventSchema);
 
 const selectEvents = async () => {
-    try {
-      return await Event.find();
-    } catch (error) {
-      throw new Error("Could not retrieve events");
-    }
-  };
+  try {
+    return await Event.find();
+  } catch (error) {
+    throw new Error("Could not retrieve events");
+  }
+};
 
 const selectEventById = async (id) => {
-    try {
-      const event = await Event.findById(id);
-      if (!event) throw new Error("Event not found");
-      return event;
-    } catch (error) {
-      throw new Error("Could not retrieve event");
-    }
-  };
+  try {
+    const event = await Event.findById(id);
+    if (!event) throw new Error("Event not found");
+    return event;
+  } catch (error) {
+    throw new Error("Could not retrieve event");
+  }
+};
 
-module.exports = { Event, selectEvents, selectEventById };
+const insertEvents = async (newEvent) => {
+  try {
+    if (Array.isArray(newEvent)) {
+      const addedEvents = await Event.insertMany(newEvent);
+      return addedEvents;
+    } else {
+      const addedEvent = await Event.create(newEvent);
+      return addedEvent;
+    }
+  } catch (error) {
+    throw new Error("Could not add event(s): " + error.message);
+  }
+};
+
+module.exports = { Event, selectEvents, selectEventById, insertEvents };

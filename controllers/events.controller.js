@@ -1,4 +1,8 @@
-const { selectEvents, selectEventById } = require("../models/events.model");
+const {
+  selectEvents,
+  selectEventById,
+  insertEvents,
+} = require("../models/events.model");
 
 exports.getEvents = (request, response, next) => {
   selectEvents()
@@ -15,4 +19,15 @@ exports.getEventById = (request, response, next) => {
       response.status(200).send(event);
     })
     .catch(next);
+};
+
+exports.postEvents = (request, response, next) => {
+  const newEvent = request.body;
+  insertEvents(newEvent)
+    .then((addedEvents) => {
+      response.status(201).send({ events: addedEvents });
+    })
+    .catch((error) => {
+      next(error);
+    });
 };
