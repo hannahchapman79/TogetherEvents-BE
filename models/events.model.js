@@ -60,11 +60,13 @@ const eventSchema = new mongoose.Schema({
 
 const Event = mongoose.model("Event", eventSchema);
 
-const selectEvents = () => {
-  return Event.find().then((events) => {
-    return events;
-  });
-};
+const selectEvents = async () => {
+    try {
+      return await Event.find();
+    } catch (error) {
+      throw new Error("Could not retrieve events");
+    }
+  };
 
 const selectEventById = async (id) => {
     try {
