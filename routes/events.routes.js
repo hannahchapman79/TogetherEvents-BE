@@ -4,6 +4,7 @@ const {
   getEventById,
   postEvents,
   updateEventById,
+  deleteEventById,
 } = require("../controllers/events.controller");
 const verifyToken = require("../middleware/jwtAuth");
 const verifyAdmin = require("../middleware/adminAuth");
@@ -17,6 +18,7 @@ eventsRouter
 eventsRouter
   .route("/:id")
   .get(getEventById)
-  .patch(verifyToken, verifyAdmin, updateEventById);
+  .patch(verifyToken, verifyAdmin, updateEventById)
+  .delete(verifyToken, verifyAdmin, deleteEventById);
 
 module.exports = eventsRouter;

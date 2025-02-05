@@ -109,10 +109,19 @@ const editEventById = async (id, newAttributes) => {
   }
 };
 
+const removeEventById = async (id) => {
+  const event = await Event.findByIdAndDelete(id);
+  if (!event) {
+    throw new Error("Event does not exist");
+  }
+  return event;
+};
+
 module.exports = {
   Event,
   selectEvents,
   selectEventById,
   insertEvents,
   editEventById,
+  removeEventById,
 };
