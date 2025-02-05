@@ -31,3 +31,15 @@ exports.postEvents = (request, response, next) => {
       next(error);
     });
 };
+
+exports.updateEventById = (request, response, next) => {
+  const { id } = request.params;
+  const newAttributes = request.body;
+  editEventById(id, newAttributes)
+    .then((updatedEvents) => {
+      response.status(200).send({ events: updatedEvents });
+    })
+    .catch((error) => {
+      next(error);
+    });
+};

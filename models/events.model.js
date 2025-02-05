@@ -92,4 +92,27 @@ const insertEvents = async (newEvent) => {
   }
 };
 
-module.exports = { Event, selectEvents, selectEventById, insertEvents };
+const editEventById = async (id, newAttributes) => {
+  try {
+    const updatedEvent = await Event.findByIdAndUpdate(id, newAttributes, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updatedEvent) {
+      throw new Error("Event not found");
+    }
+
+    return updatedEvent;
+  } catch (error) {
+    throw new Error("Could not update event");
+  }
+};
+
+module.exports = {
+  Event,
+  selectEvents,
+  selectEventById,
+  insertEvents,
+  editEventById,
+};
