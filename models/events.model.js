@@ -61,10 +61,19 @@ const eventSchema = new mongoose.Schema({
 const Event = mongoose.model("Event", eventSchema);
 
 const selectEvents = () => {
-    return Event.find()
-    .then((events) => {
-        return events;
-    })
-}
+  return Event.find().then((events) => {
+    return events;
+  });
+};
 
-module.exports = { Event, selectEvents };
+const selectEventById = async (id) => {
+    try {
+      const event = await Event.findById(id);
+      if (!event) throw new Error("Event not found");
+      return event;
+    } catch (error) {
+      throw new Error("Could not retrieve event");
+    }
+  };
+
+module.exports = { Event, selectEvents, selectEventById };
