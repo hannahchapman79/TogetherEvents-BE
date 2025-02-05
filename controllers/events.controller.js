@@ -2,6 +2,7 @@ const {
   selectEvents,
   selectEventById,
   insertEvents,
+  removeEventById,
 } = require("../models/events.model");
 
 exports.getEvents = (request, response, next) => {
@@ -42,4 +43,14 @@ exports.updateEventById = (request, response, next) => {
     .catch((error) => {
       next(error);
     });
+};
+
+exports.deleteEventById = async (request, response, next) => {
+  try {
+    const { id } = request.params;
+    await removeEventById(id);
+    response.status(200).send({ message: "Event successfully deleted" });
+  } catch (error) {
+    next(error);
+  }
 };
