@@ -1,7 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const connectMongoDB = require("./db/mongodbConnection");
-const { authRouter } = require("./routes");
+const { authRouter, eventsRouter } = require("./routes");
 const cookieParser = require("cookie-parser");
 
 const envFile = `.env.${process.env.NODE_ENV || "development"}`;
@@ -22,7 +22,7 @@ const startServer = async () => {
   try {
     await initializeServer();
     console.log("Server initialized successfully");
-    app.listen(3000, () => {
+    app.listen(9090, () => {
       console.log("Server is running...");
     });
   } catch (error) {
@@ -34,6 +34,7 @@ const startServer = async () => {
 startServer();
 
 app.use("/api/auth", authRouter);
+app.use("/api/events", eventsRouter);
 
 app.use((error, request, response, next) => {
   if (error.name === "CastError" && error.kind === "ObjectId") {

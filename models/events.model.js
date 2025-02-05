@@ -60,4 +60,11 @@ const eventSchema = new mongoose.Schema({
 
 const Event = mongoose.model("Event", eventSchema);
 
-module.exports = { Event };
+const selectEvents = () => {
+    return Event.find()
+    .then((events) => {
+        return events;
+    })
+}
+
+module.exports = { Event, selectEvents };
