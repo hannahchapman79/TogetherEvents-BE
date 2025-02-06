@@ -1,0 +1,59 @@
+{
+  "GET /api": {
+    "description": "Serves up a JSON of all the available endpoints of the api"
+  },
+  "POST /api/auth/signup": {
+    "description": "Posts a user following sign up, stores an encrypted version of their password and responds with the posted user excluding the password",
+    "exampleRequest": {
+      "username": "exampleuser",
+      "name": "Example Name",
+      "password": "HelloWorld02",
+      "email": "newuser@example.com"
+    },
+    "exampleResponse": {
+      "username": "exampleuser",
+      "name": "Example Name",
+      "email": "newuser@example.com",
+      "isAdmin": "false"
+    }
+  },
+  "POST /api/auth/login": {
+    "description": "Attempts to log a user in by email and password. Stores a refresh token in a http-only cookie. Responds with an access token and the user information upon success or and obscured error message on failure.",
+    "exampleRequest": {
+      "email": "newuser@example.com",
+      "password": "HelloWorld02"
+    },
+    "exampleResponse": {
+      "user": [
+        {
+          "user_id": 4,
+          "username": "exampleuser",
+          "email": "newuser@example.com",
+          "isAdmin": "false"
+        },
+        "eyJhbGciOioCJIUzI1SNCI6eyJ1c2VyX2SlkIy..."
+      ]
+    }
+  },
+  "POST /api/auth/refresh": {
+    "description": "Generates a new access token using a valid refresh token stored in an HTTP-only cookie. Responds with a new access token or an error if the refresh token is invalid or expired.",
+    "exampleRequest": {},
+    "exampleResponse": {
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    }
+  },
+  "GET /api/auth/me": {
+    "description": "Retrieves the currently authenticated user's information. Requires a valid access token.",
+    "exampleRequest": {
+      "Authorization": "Bearer <access_token>"
+    },
+    "exampleResponse": {
+      "user": {
+        "user_id": 4,
+        "username": "exampleuser",
+        "email": "newuser@example.com",
+        "isAdmin": false
+      }
+    }
+  }
+}
