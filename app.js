@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const connectMongoDB = require("./db/mongodbConnection");
 const { authRouter, eventsRouter } = require("./routes");
 const cookieParser = require("cookie-parser");
+const { getEndpoints } = require("./controllers/endpoints.controller");
 
 const envFile = `.env.${process.env.NODE_ENV || "development"}`;
 dotenv.config({ path: envFile });
@@ -33,6 +34,7 @@ const startServer = async () => {
 
 startServer();
 
+app.get("/api", getEndpoints);
 app.use("/api/auth", authRouter);
 app.use("/api/events", eventsRouter);
 
