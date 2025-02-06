@@ -55,5 +55,119 @@
         "isAdmin": false
       }
     }
+  },
+  "GET /api/events": {
+    "description": "Retrieves a list of all events.",
+    "exampleRequest": {},
+    "exampleResponse": {
+      "events": [
+        {
+          "id": "65a43f1e3b2b3a001d9a2e7c",
+          "title": "Tech Conference 2025",
+          "description": "A conference about the latest in tech.",
+          "startDate": "2025-06-15T09:00:00Z",
+          "endDate": "2025-06-16T17:00:00Z",
+          "location": {
+            "type": "physical"
+          },
+          "organiser": "John Doe",
+          "status": "published",
+          "maxAttendees": 200
+        }
+      ]
+    }
+  },
+  "GET /api/events/:id": {
+    "description": "Retrieves details of a specific event by its ID.",
+    "exampleRequest": {
+      "id": "65a43f1e3b2b3a001d9a2e7c"
+    },
+    "exampleResponse": {
+      "id": "65a43f1e3b2b3a001d9a2e7c",
+      "title": "Tech Conference 2025",
+      "description": "A conference about the latest in tech.",
+      "startDate": "2025-06-15T09:00:00Z",
+      "endDate": "2025-06-16T17:00:00Z",
+      "location": {
+        "type": "physical"
+      },
+      "organiser": "John Doe",
+      "status": "published",
+      "maxAttendees": 200
+    }
+  },
+  "POST /api/events": {
+    "description": "Creates a new event. Requires authentication and admin privileges.",
+    "exampleRequest": {
+      "title": "AI Summit 2025",
+      "description": "A summit on AI advancements.",
+      "startDate": "2025-07-10T10:00:00Z",
+      "endDate": "2025-07-11T16:00:00Z",
+      "location": {
+        "type": "online"
+      },
+      "category": "Technology",
+      "maxAttendees": 500
+    },
+    "exampleResponse": {
+      "events": {
+        "id": "65a56b7f4c3d9a0023f1a5b8",
+        "title": "AI Summit 2025",
+        "description": "A summit on AI advancements.",
+        "startDate": "2025-07-10T10:00:00Z",
+        "endDate": "2025-07-11T16:00:00Z",
+        "location": {
+          "type": "online"
+        },
+        "category": "Technology",
+        "maxAttendees": 500,
+        "status": "published"
+      }
+    }
+  },
+  "PATCH /api/events/:id": {
+    "description": "Updates an existing event. Requires authentication and admin privileges.",
+    "exampleRequest": {
+      "id": "65a43f1e3b2b3a001d9a2e7c",
+      "updates": {
+        "title": "Updated Tech Conference 2025"
+      }
+    },
+    "exampleResponse": {
+      "events": {
+        "id": "65a43f1e3b2b3a001d9a2e7c",
+        "title": "Updated Tech Conference 2025",
+        "description": "A conference about the latest in tech.",
+        "startDate": "2025-06-15T09:00:00Z",
+        "endDate": "2025-06-16T17:00:00Z",
+        "location": {
+          "type": "physical"
+        },
+        "status": "published",
+        "maxAttendees": 200
+      }
+    }
+  },
+  "DELETE /api/events/:id": {
+    "description": "Deletes an event by its ID. Requires authentication and admin privileges.",
+    "exampleRequest": {
+      "id": "65a43f1e3b2b3a001d9a2e7c"
+    },
+    "exampleResponse": {
+      "message": "Event successfully deleted"
+    }
+  },
+  "POST /api/events/:event_id/signup": {
+    "description": "Signs up the authenticated user for an event.",
+    "exampleRequest": {
+      "Authorization": "Bearer <access_token>"
+    },
+    "exampleResponse": {
+      "registeredEvent": {
+        "id": "65a43f1e3b2b3a001d9a2e7c",
+        "title": "Tech Conference 2025",
+        "attendees": ["65a57d8e4d9f2a0031e6b4d2"]
+      }
+    }
   }
 }
