@@ -117,6 +117,26 @@ const removeEventById = async (id) => {
   return event;
 };
 
+const registerForEvent = async (userId, eventId) => {
+  try {
+    const event = await Event.findById(eventId);
+    if (!event) {
+      throw new Error("Event not found");
+    }
+    if (event.maxAttendees && event.attendees.length >= event.maxAttendees) {
+      throw new Error("Event is full");
+    }
+    const updatedEvent = await Event.findByIdAndUpdate(
+      eventId,
+      { $addToSet: { attendees: userId } },
+      { new: true, runValidators: true },
+    );
+    return updatedEvent;
+  } catch (error) {
+    throw new Error("Could not sign up for event");
+  }
+};
+
 module.exports = {
   Event,
   selectEvents,
@@ -124,4 +144,5 @@ module.exports = {
   insertEvents,
   editEventById,
   removeEventById,
+  registerForEvent,
 };
