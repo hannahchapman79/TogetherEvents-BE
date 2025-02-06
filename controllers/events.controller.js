@@ -3,6 +3,7 @@ const {
   selectEventById,
   insertEvents,
   removeEventById,
+  registerForEvent,
 } = require("../models/events.model");
 
 exports.getEvents = (request, response, next) => {
@@ -50,6 +51,18 @@ exports.deleteEventById = async (request, response, next) => {
     const { id } = request.params;
     await removeEventById(id);
     response.status(200).send({ message: "Event successfully deleted" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.signupToEvent = (request, response, next) => {
+  try {
+    const userId = request.user.user_id;
+    const { event_id } = request.params;
+    registerForEvent(userId, event_id).then((updatedEvent) => {
+      response.status(201).send({ registeredEvent: updatedEvent });
+    });
   } catch (error) {
     next(error);
   }
