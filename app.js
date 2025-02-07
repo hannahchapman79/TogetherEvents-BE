@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const dotenv = require("dotenv");
 const connectMongoDB = require("./db/mongodbConnection");
 const { authRouter, eventsRouter } = require("./routes");
@@ -12,6 +13,7 @@ const app = express();
 // Middleware to parse JSON in request bodies
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors());
 
 const initializeServer = async () => {
   if (process.env.NODE_ENV !== "test") {
