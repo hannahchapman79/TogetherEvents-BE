@@ -69,3 +69,17 @@ exports.postRefreshToken = (request, response, next) => {
 exports.getCurrentUser = (request, response, next) => {
   response.json({ user: request.user });
 };
+
+exports.postLogout = (request, response, next) => {
+  try {
+    response.clearCookie('jwt', {
+      httpOnly: true,
+      sameSite: 'None',
+      secure: true
+    });
+
+    response.status(200).json({ message: 'Logged out successfully' });
+  } catch (error) {
+    next(error);
+  }
+};

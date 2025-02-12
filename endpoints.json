@@ -35,6 +35,15 @@
       ]
     }
   },
+  "POST /api/auth/logout": {
+    "description": "Logs out the current user by clearing their refresh token cookie.",
+    "exampleRequest": {
+      "Authorization": "Bearer <access_token>"
+    },
+    "exampleResponse": {
+      "message": "Logged out successfully"
+    }
+  },
   "POST /api/auth/refresh": {
     "description": "Generates a new access token using a valid refresh token stored in an HTTP-only cookie. Responds with a new access token or an error if the refresh token is invalid or expired.",
     "exampleRequest": {},
