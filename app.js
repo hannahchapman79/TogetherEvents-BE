@@ -13,7 +13,14 @@ const app = express();
 // Middleware to parse JSON in request bodies
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' 
+    ? 'http://localhost:4000' 
+    : 'http://localhost:3000',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 const initializeServer = async () => {
   if (process.env.NODE_ENV !== "test") {
