@@ -13,7 +13,22 @@ const app = express();
 // Middleware to parse JSON in request bodies
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+const allowedOrigins = ["http://localhost:3000"]
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true, 
+    methods: ["GET", "POST", "PUT", "DELETE"], 
+    allowedHeaders: ["Content-Type", "Authorization"], 
+  })
+);
 
 const initializeServer = async () => {
   if (process.env.NODE_ENV !== "test") {
