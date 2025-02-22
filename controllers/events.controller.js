@@ -24,9 +24,8 @@ exports.getEventById = (request, response, next) => {
 };
 
 exports.postEvents = (request, response, next) => {
-  const { id } = request.params;
   const newEvent = request.body;
-  insertEvents(newEvent, id)
+  insertEvents(newEvent)
     .then((addedEvents) => {
       response.status(201).send({ events: addedEvents });
     })

@@ -78,26 +78,8 @@ const selectEventById = async (id) => {
   }
 };
 
-const insertEvents = async (newEvent, id) => {
+const insertEvents = async (newEvent) => {
   try {
-    newEvent.organiser = id;
-    // Validate and format startDate and endDate
-    if (newEvent.startDate) {
-      const startDate = new Date(newEvent.startDate);
-      if (isNaN(startDate.getTime())) {
-        throw new Error("Invalid start date format");
-      }
-      newEvent.startDate = startDate;
-    }
-
-    if (newEvent.endDate) {
-      const endDate = new Date(newEvent.endDate);
-      if (isNaN(endDate.getTime())) {
-        throw new Error("Invalid end date format");
-      }
-      newEvent.endDate = endDate;
-    }
-
     // Create and save the event
     const addedEvent = await Event.create(newEvent);
     return addedEvent;
