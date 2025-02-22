@@ -80,20 +80,33 @@ const selectEventById = async (id) => {
 
 const insertEvents = async (newEvent) => {
   try {
-    if (newEvent.startDate) newEvent.startDate = new Date(newEvent.startDate);
-    if (newEvent.endDate) newEvent.endDate = new Date(newEvent.endDate);
-
-    if (Array.isArray(newEvent)) {
-      const addedEvents = await Event.insertMany(newEvent);
-      return addedEvents;
-    } else {
-      const addedEvent = await Event.create(newEvent);
-      return addedEvent;
+    // Validate and format startDate and endDate
+    if (newEvent.startDate) {
+      const startDate = new Date(newEvent.startDate);
+      if (isNaN(startDate.getTime())) {
+        throw new Error("Invalid start date format");
+      }
+      newEvent.startDate = startDate;
     }
+
+    if (newEvent.endDate) {
+      const endDate = new Date(newEvent.endDate);
+      if (isNaN(endDate.getTime())) {
+        throw new Error("Invalid end date format");
+      }
+      newEvent.endDate = endDate;
+    }
+
+    // Create and save the event
+    const addedEvent = await Event.create(newEvent);
+    return addedEvent;
+
   } catch (error) {
+    console.error("Error inserting event:", error.message);
     throw new Error("Could not add event(s): " + error.message);
   }
 };
+
 
 const editEventById = async (id, newAttributes) => {
   try {
