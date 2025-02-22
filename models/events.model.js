@@ -80,6 +80,9 @@ const selectEventById = async (id) => {
 
 const insertEvents = async (newEvent) => {
   try {
+    if (newEvent.startDate) newEvent.startDate = new Date(newEvent.startDate);
+    if (newEvent.endDate) newEvent.endDate = new Date(newEvent.endDate);
+
     if (Array.isArray(newEvent)) {
       const addedEvents = await Event.insertMany(newEvent);
       return addedEvents;
