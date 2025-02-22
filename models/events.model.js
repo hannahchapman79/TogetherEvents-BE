@@ -78,8 +78,9 @@ const selectEventById = async (id) => {
   }
 };
 
-const insertEvents = async (newEvent) => {
+const insertEvents = async (newEvent, id) => {
   try {
+    newEvent.organiser = id;
     // Validate and format startDate and endDate
     if (newEvent.startDate) {
       const startDate = new Date(newEvent.startDate);
