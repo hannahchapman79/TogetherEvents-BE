@@ -60,8 +60,11 @@ const eventSchema = new mongoose.Schema({
 
 const Event = mongoose.model("Event", eventSchema);
 
-const selectEvents = async () => {
+const selectEvents = async (category) => {
   try {
+    if (category) {
+      return await Event.find({ category: { $regex: `^${category}`, $options: "i" } });
+    }
     return await Event.find();
   } catch (error) {
     throw new Error("Could not retrieve events");
