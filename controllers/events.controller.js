@@ -7,7 +7,8 @@ const {
 } = require("../models/events.model");
 
 exports.getEvents = (request, response, next) => {
-  selectEvents()
+  const { category } = request.query;
+  selectEvents(category)
     .then((events) => {
       response.status(200).send({ events });
     })
