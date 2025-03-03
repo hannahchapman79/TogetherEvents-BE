@@ -4,6 +4,7 @@ const {
   insertEvents,
   removeEventById,
   registerForEvent,
+  editEventById,
 } = require("../models/events.model");
 
 exports.getEvents = (request, response, next) => {

@@ -107,7 +107,8 @@ const editEventById = async (id, newAttributes) => {
 
     return updatedEvent;
   } catch (error) {
-    throw new Error("Could not update event");
+    console.log("Error during event update:", error);  
+  throw error; 
   }
 };
 
