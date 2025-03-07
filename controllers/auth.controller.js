@@ -1,4 +1,5 @@
 const { insertUser, attemptLogin } = require("../models/auth.model");
+const jwt = require("jsonwebtoken");
 
 exports.postUser = async (request, response, next) => {
   try {
@@ -62,6 +63,7 @@ exports.postRefreshToken = (request, response, next) => {
       },
     );
   } catch (error) {
+    console.log(error)
     next(error);
   }
 };
