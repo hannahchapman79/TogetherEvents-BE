@@ -64,3 +64,11 @@ JWT_REFRESH_SECRET=your_refresh_secret
 ### Running Test Suite
 
 7. Run "npm run test"
+
+## Test Account Credentials
+
+To explore the app without signing up, use the following test credentials:
+
+**Admin Account:**  
+- Email: hannah@examples.com 
+- Password: HelloWorld0909  
