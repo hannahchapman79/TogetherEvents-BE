@@ -14,7 +14,7 @@ Hosted version: https://togetherevents-be.onrender.com
 
 ## Description
 
-TogetherEvents Backend is a Node.js and Express.js backend API that powers a community events website. Features include MongoDB-based event management, JWT-based user authentication, and role-based authorisation (admin/user). The platform allows users to view and sign up for events, while admins can create and manage events.  
+TogetherEvents Backend is a backend API that powers a community events website. Features include MongoDB-based event management, JWT-based user authentication, and role-based authorisation (admin/user). The platform allows users to view and sign up for events, while admins can create and manage events.  
 <br>
 It was built using Node.js, JavaScript, Express, MongoDB, Bcrypt for password hashing and JWT.  
 <br>
