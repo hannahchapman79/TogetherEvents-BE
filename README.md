@@ -1,4 +1,4 @@
-# TogetherEvents-BE
+# TogetherEvents Backend
 
 Hosted version: https://togetherevents-be.onrender.com
 
